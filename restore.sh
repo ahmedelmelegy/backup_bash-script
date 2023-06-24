@@ -10,7 +10,7 @@
 # Usage: 
 # backup.sh
 
-source=~/*
-dest=./my_backup
-tar -cvf ${dest}_"$(date +%d-%m-%Y_%H-%M-%S)".tar ${source} 1> comp_log.txt 2> error_log.txt
+source=./my_backup_*
+dest=./uncomp/
+tar -xvf ${source} -C ${dest} 1> uncomp_log.txt 2> uncomp_error_log.txt
 exit 0
