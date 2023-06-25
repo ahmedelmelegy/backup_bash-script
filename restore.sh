@@ -26,7 +26,7 @@ dest=${2}
 
 mkdir ${dest}/uncomp
 echo "Hello, ${USER^}"
-tar -xvf ${source}/my_backup_* -C ${dest}/uncomp 1> uncomp_log.txt 2> uncomp_error_log.txt
+tar -xvf "${source}/my_backup_*" -C "${dest}/uncomp" 1> uncomp_log.txt 2> uncomp_error_log.txt
 echo "Extraction Completed Successfully."
 
 exit 0
