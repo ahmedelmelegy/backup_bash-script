@@ -14,8 +14,15 @@
 # ./backup.sh ~ .
 
 echo "Hello, ${USER^}"
+
+if [[ $# -ne 2 ]]; then
+  echo "You didn't enter exactly 2 parameters"
+  echo "Usage: $0 source_path destination_path"
+  exit 1
+fi
+
 source=$1
-dest=${2:-.}
+dest=${2}
 
 tar -cvf ${dest}/my_backup_"$(date +%d-%m-%Y_%H-%M-%S)".tar ${source}/* 1> comp_log.txt 2> error_log.txt
 echo "Backup Completed Successfully."
