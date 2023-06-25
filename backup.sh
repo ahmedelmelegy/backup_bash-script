@@ -5,10 +5,10 @@
 # Last Modified: 25/6/2023
 
 # Description
-# Creates a backup in ~/bash_course of all files in the home directory
+# Creates a backup in destination_path of all files in the source_path
 
 # Usage: 
-# backup.sh
+# backup.sh source_path destination_path
 echo "Hello, ${USER^}"
 source=$1
 dest=$2

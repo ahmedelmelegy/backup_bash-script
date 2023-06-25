@@ -5,10 +5,10 @@
 # Last Modified: 25/6/2023
 
 # Description
-# extract contents of .tar in destination directory user specify
+# extract contents of .tar in source_path to destination_path that user specify
 
 # Usage: 
-# restore.sh
+# ./restore.sh source_path destination_path
 
 source=$1
 dest=$2
