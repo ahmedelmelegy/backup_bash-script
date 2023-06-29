@@ -55,33 +55,23 @@ snapshot_date=${snapshot_date//:/_}
 backup_directory="${destination_directory}/${snapshot_date}"
 mkdir -p "$backup_directory"
 
-if [[ -z $encryption_key ]]; then
-  echo "No encryption key provided. Backup will not be encrypted."
-  if [[ -z $days ]]; then
-    for dir in "$target"/*/; do
-      dir_name=$(basename "$dir")
-      tar -cvf "${dest}/${dir_name}_backup_$(date +%d-%m-%Y_%H-%M-%S)".tar.gz -C "$dir" . 1> comp_log.txt 2> error_log.txt
-    done
+# Loop over directories under the target directory
+for directory in "${target_directory}"/*/; do
+  directory_name=$(basename "$directory")
+
+  # Check modification date and backup only modified files within the last n days
+  if [[ -z $n ]]; then
+    find "$directory" -type f -exec tar -cvf "${backup_directory}/${directory_name}_${snapshot_date}.tar" {} \;
   else
-    for dir in "$target"/*/; do
-      dir_name=$(basename "$dir")
-      find "$dir" -type f -mtime -$days -exec tar -rvf "${dest}/${dir_name}_backup_$(date +%d-%m-%Y_%H-%M-%S)".tar.gz {} \; 1> comp_log.txt 2> error_log.txt
-    done
+    find "$directory" -type f -mtime -$n -exec tar -cvf "${backup_directory}/${directory_name}_${snapshot_date}.tar" {} \;
   fi
-else
-  echo "Encrypting backups with the provided encryption key."
-  if [[ -z $days ]]; then
-    for dir in "$target"/*/; do
-      dir_name=$(basename "$dir")
-      tar -cvf - -C "$dir" . | openssl enc -aes-256-cbc -salt -k "${encryption_key}" -out "${dest}/${dir_name}_backup_$(date +%d-%m-%Y_%H-%M-%S)".tar.gz 1> comp_log.txt 2> error_log.txt
-    done
-  else
-    for dir in "$target"/*/; do
-      dir_name=$(basename "$dir")
-      find "$dir" -type f -mtime -$days -exec tar -cvf - {} \; | openssl enc -aes-256-cbc -salt -k "${encryption_key}" -out "${dest}/${dir_name}_backup_$(date +%d-%m-%Y_%H-%M-%S)".tar.gz 1> comp_log.txt 2> error_log.txt
-    done
-  fi
-fi
+
+  # Encrypt the backup using the provided encryption key
+  gpg --batch --yes --passphrase "$encryption_key" -c "${backup_directory}/${directory_name}_${snapshot_date}.tar"
+
+  # Delete the original tar file and keep the encrypted one
+  rm "${backup_directory}/${directory_name}_${snapshot_date}.tar"
+done
 
 echo "Backup Completed Successfully."
 exit 0
