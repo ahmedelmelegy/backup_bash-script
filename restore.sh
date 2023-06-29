@@ -12,30 +12,6 @@
 # For example:
 # ./restore.sh /path/to/backup /path/to/destination mydecryptionkey
 
-if [[ $# -ne 3 ]]; then
-  echo "You didn't enter exactly 3 parameters"
-  echo "Usage: $0 source_path destination_path decryption_key"
-  exit 1
-fi
+source "$(dirname "$0")/backup_restore_lib.sh"
 
-backup_directory=$1
-destination_directory=$2
-decryption_key=$3
-
-mkdir -p "${destination_directory}/temp"
-echo "Hello, ${USER^}"
-
-# Loop over files in the backup directory
-for file in "${backup_directory}"/*; do
-  # Use gnupg tool to decrypt the files
-  gpg --batch --yes --passphrase "$decryption_key" -o "${destination_directory}/temp/$(basename "$file")" -d "$file"
-done
-
-# Loop over files stored in the temp directory and extract them
-for file in "${destination_directory}/temp"/*; do
-  # Extract the files under the destination directory
-  tar -xvf "$file" -C "$destination_directory"
-done
-
-echo "Restoration Completed Successfully."
-exit 0
+restore "$@"
