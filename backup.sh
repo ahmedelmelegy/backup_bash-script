@@ -15,15 +15,23 @@
 
 echo "Hello, ${USER^}"
 
-if [[ $# -ne 2 ]]; then
-  echo "You didn't enter exactly 2 parameters"
-  echo "Usage: $0 source_path destination_path"
+if [[ $# -ne 3 ]]; then
+  echo "You didn't enter the correct number of parameters"
+  echo "Usage: $0 source_path destination_path [encryption_key]"
   exit 1
 fi
 
 source=$1
 dest=${2}
+encryption_key=$3
 
-tar -cvf "${dest}/my_backup_$(date +%d-%m-%Y_%H-%M-%S)".tar "${source}"/* 1> comp_log.txt 2> error_log.txt
+if [[ -z $encryption_key ]]; then
+  echo "No encryption key provided. Backup will not be encrypted."
+  tar -cvf "${dest}/my_backup_$(date +%d-%m-%Y_%H-%M-%S)".tar "${source}"/* 1> comp_log.txt 2> error_log.txt
+else
+  echo "Encrypting backup with the provided encryption key."
+  tar -cvf - "${source}"/* | openssl enc -aes-256-cbc -salt -k "${encryption_key}" -out "${dest}/my_backup_$(date +%d-%m-%Y_%H-%M-%S)".tar 1> comp_log.txt 2> error_log.txt
+fi
+
 echo "Backup Completed Successfully."
 exit 0
