@@ -18,7 +18,7 @@ The `backup.sh` script creates a backup of directories and files in the specifie
 - encryption_key: The encryption key used to encrypt the backup.
 - num_days: The number of days to consider for backing up only the modified files.
 
-### Backup Script
+### Restore Script
 
 The `restore.sh` script Restores the backup by decrypting and extracting the files in reverse order.
 
@@ -27,3 +27,21 @@ The `restore.sh` script Restores the backup by decrypting and extracting the fil
 ```bash
 ./restore.sh backup_directory destination_directory decryption_key
 ```
+- backup_directory: The path to the directory where the backup files are stored.
+- destination_path: The path to the directory where the restored files should be placed.
+- decryption_key: The decryption key used to decrypt the backup files.
+  
+## Project Structure
+
+The project consists of the following files:
+- backup.sh: The main script file for performing backups.
+- restore.sh: The main script file for performing restores.
+- backup_restore_lib.sh: A library file containing common functions for parameter validation and backup/restore logic.
+
+## Dependencies
+
+The scripts rely on the following dependencies:
+- tar: Used for creating and extracting tar archives.
+- gzip: Used for compressing and decompressing files.
+- gpg: Used for encrypting and decrypting files.
+Ensure that these dependencies are installed on your system before running the scripts.
