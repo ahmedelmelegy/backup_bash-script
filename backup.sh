@@ -83,5 +83,12 @@ gpg --batch --yes --passphrase "$encryption_key" -c "${backup_directory}/all_fil
 # Delete the original tar.gz file
 rm "${backup_directory}/all_files_${snapshot_date}.tar.gz"
 
+# Copy the backup directory to the remote server
+remote_username="remote_username"
+remote_server="remote_server"
+remote_directory="remote_directory"
+
+scp -r "$backup_directory" "${remote_username}@${remote_server}:${remote_directory}"
+
 echo "Backup Completed Successfully."
 exit 0
