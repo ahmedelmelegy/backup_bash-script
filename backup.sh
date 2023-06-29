@@ -77,5 +77,8 @@ done
 tar -cvf "${backup_directory}/all_files_${snapshot_date}.tar" -C "$target_directory" .
 gzip "${backup_directory}/all_files_${snapshot_date}.tar"
 
+# Encrypt the combined backup using the provided encryption key
+gpg --batch --yes --passphrase "$encryption_key" -c "${backup_directory}/all_files_${snapshot_date}.tar.gz"
+
 echo "Backup Completed Successfully."
 exit 0
