@@ -51,6 +51,10 @@ snapshot_date=$(date +%d-%m-%Y_%H-%M-%S)
 snapshot_date=${snapshot_date// /_}
 snapshot_date=${snapshot_date//:/_}
 
+# Create a directory with the snapshot date under the destination directory
+backup_directory="${destination_directory}/${snapshot_date}"
+mkdir -p "$backup_directory"
+
 if [[ -z $encryption_key ]]; then
   echo "No encryption key provided. Backup will not be encrypted."
   if [[ -z $days ]]; then
