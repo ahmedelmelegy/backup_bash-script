@@ -90,5 +90,12 @@ remote_directory="remote_directory"
 
 scp -r "$backup_directory" "${remote_username}@${remote_server}:${remote_directory}"
 
+# Check if the scp command was successful
+if [[ $? -eq 0 ]]; then
+  echo "Backup files copied to remote server successfully."
+else
+  echo "Error: Failed to copy backup files to remote server."
+fi
+
 echo "Backup Completed Successfully."
 exit 0
