@@ -73,5 +73,9 @@ for directory in "${target_directory}"/*/; do
   rm "${backup_directory}/${directory_name}_${snapshot_date}.tar"
 done
 
+# Enumerate all files directly under the target directory and create a combined backup
+tar -cvf "${backup_directory}/all_files_${snapshot_date}.tar" -C "$target_directory" .
+gzip "${backup_directory}/all_files_${snapshot_date}.tar"
+
 echo "Backup Completed Successfully."
 exit 0
