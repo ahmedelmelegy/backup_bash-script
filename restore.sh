@@ -31,4 +31,11 @@ for file in "${backup_directory}"/*; do
   gpg --batch --yes --passphrase "$decryption_key" -o "${destination_directory}/temp/$(basename "$file")" -d "$file"
 done
 
+# Loop over files stored in the temp directory and extract them
+for file in "${destination_directory}/temp"/*; do
+  # Extract the files under the destination directory
+  tar -xvf "$file" -C "$destination_directory"
+done
+
+echo "Restoration Completed Successfully."
 exit 0
