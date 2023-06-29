@@ -46,6 +46,11 @@ if [[ ! -d $destination_directory ]]; then
   exit 1
 fi
 
+# Take a snapshot of the full date
+snapshot_date=$(date +%d-%m-%Y_%H-%M-%S)
+snapshot_date=${snapshot_date// /_}
+snapshot_date=${snapshot_date//:/_}
+
 if [[ -z $encryption_key ]]; then
   echo "No encryption key provided. Backup will not be encrypted."
   if [[ -z $days ]]; then
